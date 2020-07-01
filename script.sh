@@ -5,7 +5,7 @@ then
 	mkdir php 2>/dev/null
 	cp $(ls *.php) php 2>/dev/null
        # docker run -itd -v /root/DevOps_AL/code_detect/php:/var/www/html -p 8001:80 --name php_cont vimal13/apache-webserver-php 2>/dev/null
-        kubectl apply -f php_test_deployment.yml  --kubeconfig .kube/config
+        sudo kubectl apply -f php_test_deployment.yml  
         
 fi
 
