@@ -1,0 +1,67 @@
+---
+#service
+apiVersion: v1
+kind: Service
+metadata:
+   name: php-test-service
+   labels:
+      app: php
+      env: test
+spec:
+  ports:
+   - port: 80
+  selector:
+      app: php
+      env: test
+  type: LoadBalancer
+---
+#pvc
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: php-test-pvc
+    labels:
+        app: php
+        env: test
+spec:
+    accessModes:
+       - ReadWriteOnce
+    resources:
+       requests:
+          storage: 1Gi
+
+---
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: php-deployment
+        labels:
+                app: php
+                env: test
+spec:
+        selector:
+                matchLabels:
+                        app: php
+                        env: test
+        strategy:
+                type: Recreate
+        template:
+                metadata:
+                        labels:
+                                app: php
+                                env: test
+                spec:
+                        containers:
+                                - image: apache-webserver-php:v1
+                                  name: php-test-cont
+                                  volumeMounts:
+                                          - name: php-test-vol
+                                            mountPath: /var/log/httpd
+                                  ports:
+                                          - containerPort: 80
+                                            name: cont-port
+                        volumes:
+                                  - name: php-test-vol
+                                    persistentVolumeClaim:
+                                        claimName: php-test-pvc       
