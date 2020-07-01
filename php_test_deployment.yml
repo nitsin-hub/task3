@@ -53,7 +53,7 @@ spec:
                                 env: test
                 spec:
                         containers:
-                                - image: apache-webserver-php:v1
+                                - image: nitsin/myphp:latest
                                   name: php-test-cont
                                   volumeMounts:
                                           - name: php-test-vol
